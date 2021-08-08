@@ -1,4 +1,5 @@
 import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 var icons = {
   dasboard: (
@@ -17,22 +18,73 @@ var icons = {
       />
     </svg>
   ),
+  box: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"
+      />
+    </svg>
+  ),
+  kategori: (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="h-6 w-6"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
+      />
+    </svg>
+  ),
 };
 
+function Kategori() {
+  return (
+    <div className={" h-80 bg-white p-5 md:rounded-md"}>
+      kategori Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
+      neque earum eligendi asperiores vitae culpa esse nisi iste quisquam, minus
+      reiciendis, necessitatibus vel eos provident dolorum magni deleniti!
+      Expedita, voluptatem.
+    </div>
+  );
+}
+function Barang() {
+  return <div className={" h-80 bg-white p-5 md:rounded-md"}>aaa</div>;
+}
+
 function Dashboard() {
-  return <div>aaaaa</div>;
+  return (
+    <div className={" h-80 bg-white p-5 md:rounded-md"}>
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque earum
+      eligendi asperiores vitae culpa esse nisi iste quisquam, minus reiciendis,
+      necessitatibus vel eos provident dolorum magni deleniti! Expedita,
+      voluptatem.
+    </div>
+  );
 }
 
 function Asside(props) {
-  let style =
-    " -translate-x-full md:transform-none w-full absolute md:w-64 h-screen bg-white ";
   return (
     <aside
       className={
         (props.ss ? "transform-none" : "transform") +
-        style +
+        " -translate-x-full md:transform-none w-full absolute md:relative md:w-64 h-screen bg-white overflow-y-auto" +
         " transition-all " +
-        " p-3"
+        " p-3 text-gray-700 flex-col flex space-y-3 "
       }
     >
       {props.children}
@@ -40,19 +92,28 @@ function Asside(props) {
   );
 }
 
-function AssideItem(props) {
-  return (
-    <li
-      className={
-        " list-none p-2  w-full hover:bg-gray-300 block rounded-md transition-all hover:text-blue-700"
-      }
-    >
-      <a className={" font-semibold flex items-center"} href="#/">
-        {props.icon}
-        <div className="ml-3">{props.title}</div>
-      </a>
-    </li>
-  );
+class AssideItem extends React.Component {
+  constructor(props) {
+    super(props);
+    this.clicH.bind(this);
+  }
+  clicH = () => {
+    this.props.onPress();
+  };
+  render() {
+    return (
+      <li
+        className={
+          " list-none p-2  w-full hover:bg-gray-300 block rounded-md transition-all hover:text-blue-700"
+        }
+      >
+        <Link onClick={this.clicH} to={this.props.to} className={" font-semibold flex items-center"}>
+          {this.props.icon}
+          <div className="ml-3">{this.props.title}</div>
+        </Link>
+      </li>
+    );
+  }
 }
 
 class AssideButton extends React.Component {
@@ -62,7 +123,7 @@ class AssideButton extends React.Component {
   }
 
   clicH = () => {
-    this.props.onPress(!this.props.state);
+    this.props.onPress();
   };
 
   render() {
@@ -119,27 +180,43 @@ class App extends React.Component {
     this.state = { asside: true };
     this.assideState.bind(this);
   }
-  assideState = (state) => {
+  assideState = () => {
     // alert(state)
-    this.setState({ asside: state });
+    this.setState({ asside: !this.state.asside });
   };
   render() {
     return (
-      <div className="App flex bg-gray-200 h-screen w-screen">
-        <Asside ss={this.state.asside}>
-          <ul>
-            <AssideItem title={"Dashboard"} icon={icons.dasboard} />
-          </ul>
-        </Asside>
+      <Router>
+        <div className="App flex bg-gray-200 h-screen w-screen">
+          <Asside ss={this.state.asside}>
+            <div className={"font-semibold p-3 border-b text-xl"}>AdminMe</div>
+            <ul className={" h-full overflow-y-auto "}>
+              <AssideItem onPress={this.assideState} title={"Dashboard"} icon={icons.dasboard} to="/" />
+              <AssideItem onPress={this.assideState} title={"Barang"} icon={icons.box} to="/barang" />
+              <AssideItem
+                onPress={this.assideState}
+                title={"kategori"}
+                icon={icons.kategori}
+                to="/kategori"
+              />
+            </ul>
+          </Asside>
 
-        <AssideButton state={this.state.asside} onPress={this.assideState} />
-        <main className="flex-row w-full">
-          <nav className=" h-10 bg-blue-500"></nav>
-          <div className="w-full p-5">
-            <Dashboard />
-          </div>
-        </main>
-      </div>
+          <AssideButton state={this.state.asside} onPress={this.assideState} />
+          <main className="flex flex-col w-full">
+            <nav className=" h-10 bg-blue-500"></nav>
+            <div className=" md:p-5 h-full overflow-y-auto">
+              <Switch>
+                <Route exact path="/" component={Dashboard}></Route>
+                <Route path="/barang" component={Barang} />
+                <Route path="/kategori">
+                  <Kategori />
+                </Route>
+              </Switch>
+            </div>
+          </main>
+        </div>
+      </Router>
     );
   }
 }
