@@ -1,5 +1,15 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import React, { useRef, useEffect, createRef } from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink,
+} from "react-router-dom";
+import Dashboard from "./view/Dashboard";
+import Barang from "./view/Barang";
+import Kategori from "./view/Kategori";
+import cat from "./image/cat.jpg";
+import OutsideClickHandler from "./tools/OutsideClickHandler";
 
 var icons = {
   dasboard: (
@@ -52,31 +62,6 @@ var icons = {
   ),
 };
 
-function Kategori() {
-  return (
-    <div className={" h-80 bg-white p-5 md:rounded-md"}>
-      kategori Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem
-      neque earum eligendi asperiores vitae culpa esse nisi iste quisquam, minus
-      reiciendis, necessitatibus vel eos provident dolorum magni deleniti!
-      Expedita, voluptatem.
-    </div>
-  );
-}
-function Barang() {
-  return <div className={" h-80 bg-white p-5 md:rounded-md"}>aaa</div>;
-}
-
-function Dashboard() {
-  return (
-    <div className={" h-80 bg-white p-5 md:rounded-md"}>
-      Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque earum
-      eligendi asperiores vitae culpa esse nisi iste quisquam, minus reiciendis,
-      necessitatibus vel eos provident dolorum magni deleniti! Expedita,
-      voluptatem.
-    </div>
-  );
-}
-
 function Asside(props) {
   return (
     <aside
@@ -84,7 +69,7 @@ function Asside(props) {
         (props.ss ? "transform-none" : "transform") +
         " -translate-x-full md:transform-none w-full absolute md:relative md:w-64 h-screen bg-white overflow-y-auto" +
         " transition-all " +
-        " p-3 text-gray-700 flex-col flex space-y-3 "
+        " text-gray-700 flex-col flex space-y-3 "
       }
     >
       {props.children}
@@ -102,16 +87,18 @@ class AssideItem extends React.Component {
   };
   render() {
     return (
-      <li
+      <NavLink
+        activeClassName={"border-l-4 text-blue-700"}
+        onClick={this.clicH}
+        exact
+        to={this.props.to}
         className={
-          " list-none p-2  w-full hover:bg-gray-300 block rounded-md transition-all hover:text-blue-700"
+          " border-blue-400 my-2 font-semibold flex items-center list-none py-2 px-5  w-full transition-all hover:text-black"
         }
       >
-        <Link onClick={this.clicH} to={this.props.to} className={" font-semibold flex items-center"}>
-          {this.props.icon}
-          <div className="ml-3">{this.props.title}</div>
-        </Link>
-      </li>
+        {this.props.icon}
+        <div className="ml-3">{this.props.title}</div>
+      </NavLink>
     );
   }
 }
@@ -174,6 +161,90 @@ class AssideButton extends React.Component {
   }
 }
 
+class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { active: false };
+    this.clickH.bind(this);
+    this.setFalse(this);
+  }
+  clickH = () => {
+    this.setState({ active: !this.state.active });
+  };
+
+  setFalse = () => {
+    this.setState({ active: false });
+  };
+
+  render() {
+    return (
+      <nav className=" px-5 py-2 flex bg-gradient-to-l from-blue-300 to-blue-400 justify-between items-center">
+        <div className={"font-semibold text-white"}>PT. Sumber Makmur</div>
+
+        <OutsideClickHandler onOutsideClick={this.setFalse} className="flex">
+          <button
+            // onBlur={this.setFalse}
+            className={
+              " w-11 h-11 rounded-full overflow-hidden cursor-pointer focus:ring-3 ring-blue-400"
+            }
+            onClick={this.clickH}
+          >
+            <img src={cat} />
+          </button>
+          <div
+            className={
+              (this.state.active
+                ? " translate-y-0 opacity-100"
+                : " translate-y-full opacity-0") +
+              " transform transition-all text-gray-600  flex flex-col absolute bg-white p-3 w-40 space-y-2 shadow-md font-semibold right-3 top-16 rounded-md"
+            }
+          >
+            <a className={"hover:text-black p-2 flex transition-all"} href="#/">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
+              Akun
+            </a>
+            <a
+              className={
+                " text-red-500 hover:bg-red-500 hover:text-white rounded-md p-2 flex transition-all"
+              }
+              href="#/"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 mr-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                />
+              </svg>
+              Logout
+            </a>
+          </div>
+        </OutsideClickHandler>
+      </nav>
+    );
+  }
+}
+
 class App extends React.Component {
   constructor() {
     super();
@@ -187,31 +258,43 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <div className="App flex bg-gray-200 h-screen w-screen">
+        <div className="App flex bg-gray-100 h-screen w-screen">
           <Asside ss={this.state.asside}>
-            <div className={"font-semibold p-3 border-b text-xl"}>AdminMe</div>
-            <ul className={" h-full overflow-y-auto "}>
-              <AssideItem onPress={this.assideState} title={"Dashboard"} icon={icons.dasboard} to="/" />
-              <AssideItem onPress={this.assideState} title={"Barang"} icon={icons.box} to="/barang" />
+            <div className={"p-5 font-bold border-b text-xl"}>
+              AdminMe!
+              <br />
+              <small className={"font-normal text-sm"}>v.1.0</small>
+            </div>
+            <div className={" h-full overflow-y-auto text-gray-600 "}>
+              <AssideItem
+                onPress={this.assideState}
+                title={"Dashboard"}
+                icon={icons.dasboard}
+                to="/"
+              />
+              <AssideItem
+                onPress={this.assideState}
+                title={"Barang"}
+                icon={icons.box}
+                to="/barang"
+              />
               <AssideItem
                 onPress={this.assideState}
                 title={"kategori"}
                 icon={icons.kategori}
                 to="/kategori"
               />
-            </ul>
+            </div>
           </Asside>
 
           <AssideButton state={this.state.asside} onPress={this.assideState} />
           <main className="flex flex-col w-full">
-            <nav className=" h-10 bg-blue-500"></nav>
+            <Navbar />
             <div className=" md:p-5 h-full overflow-y-auto">
               <Switch>
-                <Route exact path="/" component={Dashboard}></Route>
+                <Route exact path="/" component={Dashboard} />
                 <Route path="/barang" component={Barang} />
-                <Route path="/kategori">
-                  <Kategori />
-                </Route>
+                <Route path="/kategori" component={Kategori} />
               </Switch>
             </div>
           </main>
