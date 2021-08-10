@@ -70,10 +70,14 @@ class App extends React.Component {
     this.state = { asside: false };
     // this.assideState.bind(this);
   }
+
   assideState = () => {
     // alert(state)
     this.setState({ asside: !this.state.asside });
   };
+  addTable(){
+    this.setState({tabelBarang:[...this.state.tabelBarang,{col1:"aa",col2:"aa"}]})
+  }
   render() {
     return (
       <Router>
@@ -106,14 +110,18 @@ class App extends React.Component {
           </Asside>
 
           <AssideButton state={this.state.asside} onPress={this.assideState} />
-          <main className="flex flex-col w-full">
+          <main className="flex flex-col w-full overflow-y-auto justify-between">
             <Navbar />
-            <div className=" md:p-5 h-full overflow-y-auto">
+            <div className=" md:p-5 flex-grow">
               <Switch>
                 <Route exact path="/" component={Dashboard} />
                 <Route path="/barang" component={Barang} />
                 <Route path="/kategori" component={Kategori} />
               </Switch>
+            </div>
+            <div className={" text-white flex justify-between items-center bottom-0 p-5 bg-gray-800"}>
+              <span>Copyright &copy; 2021</span>
+              <span>This Shit is made by  <a className={"font-semibold"} href="/aa">me &#129312;</a></span>
             </div>
           </main>
         </div>

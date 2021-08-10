@@ -3,8 +3,8 @@ import React from "react";
 
 function Dashboard() {
     return (
-      <div className={" h-80 bg-white p-5 md:rounded-md"}>
-        <div className={" font-extrabold text-7xl mb-14 text-center"}>
+      <div className={"bg-white p-5 md:rounded-md"}>
+        <div className={" font-extrabold text-5xl mb-14 text-center"}>
             Welcom Master !
         </div>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem neque earum
