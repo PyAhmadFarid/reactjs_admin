@@ -54,7 +54,7 @@ function Barang(props) {
             fdata(dt)
         } else {
             fdata(bdata);
-            localStorage.setObject('barang', JSON.stringify(bdata));
+            localStorage.setItem('barang', JSON.stringify(bdata));
         }
 
     }, []);
@@ -79,7 +79,7 @@ function Barang(props) {
     }
 
     return (
-        <div className={" bg-white px-5 py-10 md:rounded-md flex flex-col text-gray-600"}>
+        <div className={" shadow-md bg-white px-5 py-10 md:rounded-md flex flex-col text-gray-600"}>
             <div className="flex justify-between space-x-3">
                 <button onClick={() => addbf(!addb)} className={" flex items-center focus:ring-4 ring-green-300 text-sm p-3 font-semibold rounded-full bg-green-200 text-green-800"}>
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

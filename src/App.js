@@ -119,9 +119,9 @@ class App extends React.Component {
                 <Route path="/kategori" component={Kategori} />
               </Switch>
             </div>
-            <div className={" text-white flex justify-between items-center bottom-0 p-5 bg-gray-800"}>
+            <div className={" text-white flex justify-between items-center bottom-0 py-5 px-10 bg-gradient-to-t from-gray-800 to-gray-600"}>
               <span>Copyright &copy; 2021</span>
-              <span>This Shit is made by  <a className={"font-semibold"} href="/aa">me &#129312;</a></span>
+              <span>This Shit is made <a className={"font-semibold"} href="/aa"> by &#129312; me</a></span>
             </div>
           </main>
         </div>
