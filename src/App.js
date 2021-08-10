@@ -67,7 +67,7 @@ var icons = {
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { asside: true };
+    this.state = { asside: false };
     // this.assideState.bind(this);
   }
   assideState = () => {
